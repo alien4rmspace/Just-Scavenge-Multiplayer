@@ -17,8 +17,7 @@ Client
         → Unity NGO (server-authoritative gameplay)
 ```
 https://github.com/user-attachments/assets/2d396fcf-123f-4a04-8fa1-3a79c4493217
-> Two clients connected to a PlayFab dedicated server — unit selection, movement commands, and zombie combat in action.
-
+*Two clients connected to a PlayFab dedicated server via Azure Function matchmaking. Showing unit selection, movement commands, and zombie combat.*
 ---
 
 ## Tech Stack
