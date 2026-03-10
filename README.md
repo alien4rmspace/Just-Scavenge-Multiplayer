@@ -16,7 +16,7 @@ Client
       → PlayFab Dedicated Server (Docker container)
         → Unity NGO (server-authoritative gameplay)
 ```
-
+> Two clients connected to a PlayFab dedicated server — unit selection, movement commands, and zombie combat in action.
 https://github.com/user-attachments/assets/2d396fcf-123f-4a04-8fa1-3a79c4493217
 
 
