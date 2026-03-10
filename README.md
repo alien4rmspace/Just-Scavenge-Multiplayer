@@ -1,7 +1,7 @@
 # Just Scavenge — Multiplayer Systems
 
 Public scripts from a top-down co-op zombie survival extraction game 
-built with Unity Netcode for GameObjects and PlayFab dedicated servers.
+built with Unity Netcode for GameObjects and PlayFab cloud servers.
 
 > Full game is in a private repository. This repo contains the core 
 > networking, AI, and server infrastructure scripts.
