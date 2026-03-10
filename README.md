@@ -12,7 +12,7 @@ built with Unity Netcode for GameObjects and PlayFab cloud servers.
 ```
 Client
   → PlayFab Login & Matchmaking
-    → Azure Function (find/allocate server)
+    → Azure Function (hide api keys from public and find/allocate server)
       → PlayFab Dedicated Server (Docker container)
         → Unity NGO (server-authoritative gameplay)
 ```
