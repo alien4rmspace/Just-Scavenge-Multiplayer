@@ -84,7 +84,7 @@ Tier 3  → minimal AI rate (0.2hz), NetworkTransform disabled
 Tier assignments are batched across frames to avoid single-frame 
 spikes. Profiled at 0.15ms for 203 simultaneous zombies.
 
-### Dedicated Server Pipeline
+### Cloud Server Pipeline
 ```
 Unity Linux build → Docker container → PlayFab build
   → GSDK heartbeat → allocation callback
