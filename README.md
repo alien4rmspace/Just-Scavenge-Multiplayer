@@ -43,9 +43,9 @@ https://github.com/user-attachments/assets/2d396fcf-123f-4a04-8fa1-3a79c4493217
 ### Units
 | Script | Description |
 |---|---|
-| `Unit.cs` | Base NetworkBehaviour — health, death, ragdoll, knockback, damage popups |
+| `Unit.cs` | Base NetworkBehaviour: health, death, ragdoll, knockback, damage popups |
 | `PlayerUnit.cs` | Ownership-aware input, ServerRpc movement, formation logic |
-| `ZombieUnit.cs` | Server-authoritative AI — target finding, NavMesh, alert system, wander |
+| `ZombieUnit.cs` | Server-authoritative AI: target finding, NavMesh, alert system, wander |
 
 ### AI
 | Script | Description |
@@ -55,7 +55,7 @@ https://github.com/user-attachments/assets/2d396fcf-123f-4a04-8fa1-3a79c4493217
 ### Optimization
 | Script | Description |
 |---|---|
-| `ZombieSyncManager.cs` | Custom 3-tier LOD — manages NetworkTransform sync rate and AI update frequency for 300+ simultaneous zombies |
+| `ZombieSyncManager.cs` | Custom 3-tier LOD: manages NetworkTransform sync rate and AI update frequency for 300+ simultaneous zombies |
 
 ### Combat
 | Script | Description |
@@ -90,7 +90,8 @@ spikes. Profiled at 0.15ms for 203 simultaneous zombies.
 Unity Linux build → Docker container → PlayFab build
   → GSDK heartbeat → allocation callback
     → port resolution → NGO StartServer
-      → empty server timeout → Application.Quit
+      → client connects via Azure Function matchmaking
+        → empty server timeout → Application.Quit
 ```
 
 ### Server Performance (D2asv4, 2 vCPU)
