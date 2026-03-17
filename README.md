@@ -9,6 +9,7 @@ Public scripts from a top-down co-op zombie survival extraction game built in Un
 
 > Full game is in a private repository. This repo contains selected core 
 > networking, AI, and server infrastructure scripts.
+> No API keys are exposed in either repository, this includes the commit history.
 
 ## Architecture Overview
 ```
