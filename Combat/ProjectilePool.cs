@@ -6,11 +6,6 @@ using Unity.Netcode;
 /// Object pool for networked projectiles.
 /// Register this pool before any projectiles spawn (e.g. in Awake or OnNetworkSpawn).
 ///
-/// Usage:
-///   1. Add this component to a GameObject in the scene
-///   2. Assign the projectile prefab (must have NetworkObject)
-///   3. Set initialSize to pre-warm the pool
-///
 /// Spawn() and Despawn() through this handler.
 ///
 /// IMPORTANT: The prefab must be registered with NetworkManager BEFORE any spawns occur.
