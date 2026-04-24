@@ -20,7 +20,7 @@ Client
         → Unity NGO (server-authoritative gameplay)
 ```
 https://github.com/user-attachments/assets/2d396fcf-123f-4a04-8fa1-3a79c4493217
->Two clients connected to a PlayFab cloud server via Azure Function matchmaking. Showing ownership unit selection, movement commands, and unit combat.
+> Gameplay demo showing the current in-game systems, including player movement, combat, enemy behavior, and core mechanics.
 ---
 
 ## Tech Stack
