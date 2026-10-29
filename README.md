@@ -87,7 +87,6 @@ https://github.com/user-attachments/assets/2cb66ee2-95bf-4b0e-9161-4768dece1be6
 | Shared navigation | [ZombieFlowFieldManager.cs](Optimization/ZombieFlowFieldManager.cs) | Shared horde directions over cached NavMesh topology |
 | Spawn pacing | [ZombieSpawnScheduler.cs](Optimization/ZombieSpawnScheduler.cs) | A shared creation budget for fresh spawns and restoration |
 | World loot | [LootSocketManager.cs](Loot/LootSocketManager.cs) | Weighted chunk activation and timed restocking |
-| Server lifecycle | [ServerBootstrap.cs](Networking/ServerBootstrap.cs) | PlayFab allocation, NGO startup, scene selection, and shutdown |
 
 ### Architecture
 
@@ -212,8 +211,8 @@ matching client/server builds and representative scenes.
 The source project uses Unity **6000.4.4f1**, Universal Render Pipeline **17.4.0**,
 Netcode for GameObjects **2.11.0**, AI Navigation **2.0.12**, and the Input System.
 Its online infrastructure uses PlayFab authentication and Multiplayer Servers,
-the PlayFab GSDK, Azure Functions, and Linux server containers. This repository
-includes the Unity server lifecycle samples, not the complete service stack.
+the PlayFab GSDK, Azure Functions, and Linux server containers. Server startup,
+connection handling, deployment, and backend code are not included here.
 
 See [current tuning](docs/current-tuning.md) for the serialized settings behind
 this snapshot. Unity assets can override C# field initializers, so the scripts'
@@ -230,8 +229,8 @@ server.
 
 **This is a code portfolio, not a standalone Unity project.** It omits scenes,
 prefabs, ScriptableObject instances, art/audio, package setup, backend services,
-and supporting game systems such as inventory, profiles, weapons, and status
-effects. The selected scripts reference those dependencies and will not compile
+server startup and connection handling, and supporting game systems such as
+inventory, profiles, weapons, and status effects. The selected scripts reference those dependencies and will not compile
 as a complete game on their own. Deployment configuration is not included.
 
 ### Check the exported snapshot
