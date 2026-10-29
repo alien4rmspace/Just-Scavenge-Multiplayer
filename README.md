@@ -40,20 +40,18 @@ overlay, showing roughly 90–115 ms round trip to the server.</sub>
 
 ## Gameplay
 
-https://github.com/user-attachments/assets/2cb66ee2-95bf-4b0e-9161-4768dece1be6
-
 <table>
   <tr>
-    <td width="50%"><img src="docs/media/rocket-explosion.jpg" alt="A rocket detonating at a crossroads beside a motel sign"></td>
-    <td width="50%"><img src="docs/media/field-inventory.jpg" alt="Field inventory with survivor loadouts and an AK-47 stat tooltip"></td>
+    <td width="50%"><img src="docs/media/explosive-weapons.gif" alt="A rocket detonating at a crossroads beside a motel sign"></td>
+    <td width="50%"><img src="docs/media/field-inventory.gif" alt="Browsing the field inventory: survivor loadouts and weapon stat tooltips"></td>
   </tr>
   <tr>
     <td align="center"><sub>Explosive weapons</sub></td>
     <td align="center"><sub>Field inventory and item stats</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="docs/media/home-storage.jpg" alt="Home base storage shed with base storage and deployment inventory grids"></td>
-    <td width="50%"><img src="docs/media/deployment-board.jpg" alt="Deployment board choosing a three-survivor squad and the next expedition"></td>
+    <td width="50%"><img src="docs/media/home-storage.gif" alt="Browsing the home base storage shed and deployment inventory"></td>
+    <td width="50%"><img src="docs/media/deployment-board.gif" alt="Opening the deployment board to pick the squad and the next expedition"></td>
   </tr>
   <tr>
     <td align="center"><sub>Home base storage</sub></td>
