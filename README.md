@@ -1,36 +1,81 @@
 # Just Scavenge — Multiplayer Systems
 
-A top-down co-op zombie survival prototype built in Unity. Deploy a survivor squad,
-scavenge supplies, fight through the neighborhood, and bring progression home.
+**Survive. Scavenge. Return.**
 
-This portfolio explores the engineering behind that loop: server-owned combat,
-selective replication, shared zombie navigation, and bounded spawning work.
-The full Unity game remains private; these selected files are for architectural review.
+A top-down co-op zombie survival game built in Unity with Netcode for
+GameObjects and PlayFab dedicated servers. Deploy a squad of survivors from your
+home base, scavenge an open neighborhood, fight through zombie hordes, and bring
+the loot home.
+
+This repository is the project's engineering portfolio: selected C# source from
+the private game, focused on server-authoritative combat, per-client
+replication, scalable zombie simulation, and compact network protocols. The full
+Unity project, art, audio, and backend services remain private.
+
+![An online session: deploying a squad from the home base, finding a mission server, and fighting zombie hordes](docs/media/gameplay-highlights.gif)
+
+<sub>An online session: deploying from the home base, finding a mission server,
+and fighting zombie hordes. The panel at the top left is the live network
+overlay, showing roughly 90–115 ms round trip to the server.</sub>
+
+## Highlights
+
+- **Server-authoritative co-op.** Dedicated Linux servers on PlayFab Multiplayer
+  Servers resolve movement, targeting, combat, damage, inventory, and loot.
+  Clients send commands and present the results.
+- **No network object per bullet.** The server simulates projectiles locally and
+  sends compact, recipient-filtered shot batches that clients replay as visuals.
+  Sixteen ordinary shots fit in 254 payload bytes instead of 1,156.
+- **Each player receives only what their squad can reach.** Per-client network
+  interest replicates zombies, loot, shots, and explosions only around that
+  player's living survivors.
+- **Simulation follows the players, not the map.** Only chunks near survivors are
+  active. Distant zombies go dormant, idle zombies at the edge decide less often,
+  and hordes share one cached flow field.
+- **No spawn spikes.** A shared per-frame creation budget replaced single frames
+  that built 49–51 zombies and took 64–71 ms on the server.
+- **A lean dedicated server.** Visual-only zombie content is stripped from server
+  builds, cutting each server zombie from 91 GameObjects to 1.
 
 ## Gameplay
 
 https://github.com/user-attachments/assets/2cb66ee2-95bf-4b0e-9161-4768dece1be6
 
-Gameplay footage showing squad movement, combat, and enemy behavior; the source snapshot below identifies the published code.
+<table>
+  <tr>
+    <td width="50%"><img src="docs/media/rocket-explosion.jpg" alt="A rocket detonating at a crossroads beside a motel sign"></td>
+    <td width="50%"><img src="docs/media/field-inventory.jpg" alt="Field inventory with survivor loadouts and an AK-47 stat tooltip"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Explosive weapons</sub></td>
+    <td align="center"><sub>Field inventory and item stats</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/media/home-storage.jpg" alt="Home base storage shed with base storage and deployment inventory grids"></td>
+    <td width="50%"><img src="docs/media/deployment-board.jpg" alt="Deployment board choosing a three-survivor squad and the next expedition"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Home base storage</sub></td>
+    <td align="center"><sub>Deployment board</sub></td>
+  </tr>
+</table>
 
-## Snapshot and scope
+- **Squad control.** Click or drag to select up to three survivors, click to
+  move along previewed paths, and let them engage zombies within weapon range.
+- **Combat.** Rifles, shotguns, pistols, a crossbow, melee weapons, and rockets,
+  with damage numbers, critical hits, hit reactions, and ragdoll deaths. Gunfire
+  alerts nearby zombies, which converge as a horde.
+- **Scavenging.** Highlighted loot containers, a pickup feed, and a squad-wide
+  field inventory for equipping, using, and salvaging items from Common to
+  Legendary.
+- **Home base.** A private city block with storage, loadouts, and a deployment
+  board for choosing the squad and the next expedition across three maps.
+- **Online co-op.** Each player brings their own squad to a dedicated mission
+  server, with in-game chat, fog of war, and a minimap radar.
 
-**Source snapshot: October 28, 2026.** These samples reflect the local game's
-working files, including changes that were not yet committed in the private
-project. This is a source snapshot, not a claim that every change is in a shipped
-client or hosted server.
+## Engineering
 
-The files are exported without rewriting their gameplay implementation.
-[SOURCE_SNAPSHOT.json](SOURCE_SNAPSHOT.json) records their original paths,
-LF-normalized SHA-256 hashes, source revision, and working-tree state.
-
-**This is a code portfolio, not a standalone Unity project.** It omits scenes,
-prefabs, ScriptableObject instances, art/audio, package setup, backend services,
-and supporting game systems such as inventory, profiles, weapons, and status
-effects. The selected scripts reference those dependencies and will not compile
-as a complete game on their own. Deployment configuration is not included.
-
-## What to explore
+### Where to start
 
 | Engineering area | Starting point | What the sample demonstrates |
 |---|---|---|
@@ -44,7 +89,7 @@ as a complete game on their own. Deployment configuration is not included.
 | World loot | [LootSocketManager.cs](Loot/LootSocketManager.cs) | Weighted chunk activation and timed restocking |
 | Server lifecycle | [ServerBootstrap.cs](Networking/ServerBootstrap.cs) | PlayFab allocation, NGO startup, scene selection, and shutdown |
 
-## Architecture
+### Architecture
 
 ```mermaid
 flowchart LR
@@ -144,6 +189,24 @@ lock so two units cannot process the same container concurrently.
 Chunk activation controls simulation and loot availability. It does **not**
 stream map geometry out of memory.
 
+## Results
+
+Recorded during development in the private project. The captures, profiling
+builds, and test projects are not part of this repository, so these figures are
+evidence of the work rather than reproducible benchmarks.
+
+| Change | Recorded result | Kind of evidence |
+|---|---|---|
+| Shared zombie creation budget | Worst server frames 64–71 ms before; 33.5–34.5 ms after, close to the 30 FPS cap | Separate hosted captures, not a controlled A/B |
+| Compact shot batches | 16 ordinary shots: 1,156 → 254 payload bytes (78% smaller) | Format arithmetic and byte-layout tests; excludes network headers |
+| Compact hit-effect batches | 26 / 35 / 44 / 53 payload bytes for 1–4 hits | Byte-layout tests; excludes network headers |
+| Server-only zombie content | 91 → 1 GameObjects and 31 → 0 renderers per server zombie | Packed prefab counts; no CPU figure |
+| Server frame pacing | Held the 30 FPS cap; frame work averaged 3.1 ms (p95 4.7 ms) | One 60-second gameplay capture on one map |
+| Per-client network interest | 0.05–0.07 ms per server frame; bandwidth saving not measured | Stationary three-survivor captures |
+
+Live latency, packet loss, and large-horde performance require testing with
+matching client/server builds and representative scenes.
+
 ## Technology and tuning
 
 The source project uses Unity **6000.4.4f1**, Universal Render Pipeline **17.4.0**,
@@ -156,11 +219,22 @@ See [current tuning](docs/current-tuning.md) for the serialized settings behind
 this snapshot. Unity assets can override C# field initializers, so the scripts'
 defaults alone do not establish effective gameplay values.
 
-No reproducible performance benchmark accompanies this snapshot. Live latency,
-packet loss, and large-horde performance require testing with matching
-client/server builds and representative scenes.
+## Snapshot and scope
 
-## Check the exported snapshot
+**Source snapshot: October 28, 2026.** Every exported file matches private
+commit `ce09667c7`. [SOURCE_SNAPSHOT.json](SOURCE_SNAPSHOT.json) records each
+file's original path, LF-normalized SHA-256 hash, and that source revision. The
+files are exported without rewriting their gameplay implementation. This is a
+source snapshot, not a claim that every change is in a shipped client or hosted
+server.
+
+**This is a code portfolio, not a standalone Unity project.** It omits scenes,
+prefabs, ScriptableObject instances, art/audio, package setup, backend services,
+and supporting game systems such as inventory, profiles, weapons, and status
+effects. The selected scripts reference those dependencies and will not compile
+as a complete game on their own. Deployment configuration is not included.
+
+### Check the exported snapshot
 
 Run the verifier from this repository with Python 3:
 ```sh
